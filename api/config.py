@@ -27,6 +27,7 @@ class Settings(BaseSettings):
         return f"https://{self.DOMAIN}"
 
     PROJECT_NAME: str
+    BASE_REST_URL: str
 
 
 settings = Settings()  # type: ignore

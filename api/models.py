@@ -1,11 +1,10 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Country(BaseModel):
-    code: Optional[str] = None
-
+    code: str = Field()
 
 class Region(BaseModel):
     name: Optional[str] = None

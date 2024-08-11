@@ -1,6 +1,10 @@
 services:
+  envVars:
+    - key: PYTHON_VERSION
+      value: '3.12'
+
   - type: web
-    name: "RESTful with more FastAPI"
+    name: 'RESTful with more FastAPI'
     runtime: python
     plan: free
     autoDeploy: false

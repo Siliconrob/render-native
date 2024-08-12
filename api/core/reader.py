@@ -12,6 +12,18 @@ from api.config import settings
 
 
 @alru_cache(ttl=3600)
+async def get_countries_by_code(code) -> Any:
+    if settings.BASE_REST_URL is None or settings.BASE_REST_URL == "":
+        raise Exception(f'BASE_REST_URL must be set')
+
+    headers = ic({"User-Agent": agents.random_agent()})
+    async with httpx.AsyncClient() as client:
+        r = await client.get(ic(f'{settings.BASE_REST_URL}/alpha/{code}'), headers=headers)
+        return r.raise_for_status().json()
+    return None
+
+
+@alru_cache(ttl=3600)
 async def get_countries() -> Any:
     if settings.BASE_REST_URL is None or settings.BASE_REST_URL == "":
         raise Exception(f'BASE_REST_URL must be set')

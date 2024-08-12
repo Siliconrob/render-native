@@ -15,5 +15,5 @@ def read_languages() -> Any:
     Get a specific user by id.
     """
     response = Language()
-    response.code = None
+    response.description = None
     return response

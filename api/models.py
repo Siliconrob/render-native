@@ -3,15 +3,6 @@ from typing import Optional, Generic, TypeVar
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
-
-class Region(BaseModel):
-    name: Optional[str] = None
-
-
-class Language(BaseModel):
-    description: Optional[str] = None
-
-
 class Translation(BaseModel):
     official: str
     common: str
@@ -89,8 +80,18 @@ class Country(BaseModel):
 T = TypeVar('T')
 
 class PagedResult(BaseModel, Generic[T]):
-    countries: list[T] = []
-    items: int = 0
+    items: list[T] = []
+    item_count: int = 0
     page: int = 1
     page_count: int = 0
     total: int = 0
+
+
+class Region(BaseModel):
+    name: Optional[str] = None
+    countries: list[Country] = []
+
+
+class Language(BaseModel):
+    name: Optional[str] = None
+    countries: list[Country] = []

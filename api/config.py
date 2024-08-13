@@ -6,6 +6,11 @@ from pydantic import (
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+import time
+from cacheout import Cache
+
+cache = Cache(maxsize=8192, ttl=3600, timer=time.time, default=None)  # defaults
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(

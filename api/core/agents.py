@@ -1,5 +1,7 @@
 import random
-from typing import Dict, Any, List
+from typing import Any
+
+from api.mapper import cache
 
 user_agent_list = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.3',
@@ -38,4 +40,9 @@ user_agent_list = [
 
 
 def random_agent() -> str | Any:
+    key = "user_agent_list"
+    cached_agents = cache.get(key)
+    if cached_agents is not None:
+        return cached_agents[random.randint(0, len(cached_agents) - 1)]
+    cache.set(key, user_agent_list)
     return user_agent_list[random.randint(0, len(user_agent_list) - 1)]

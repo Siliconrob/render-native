@@ -1,6 +1,7 @@
 from typing import Any
 from fastapi import APIRouter, HTTPException
 from api.core import reader
+from api.core.finder import search_all_countries
 from api.mapper import map_country, get_paged_response
 from api.models import Country, PagedResult
 
@@ -8,8 +9,8 @@ router = APIRouter()
 
 
 @router.get("/countries", response_model=PagedResult[Country])
-async def read_countries(limit: int = 10, page: int = 1) -> Any:
-    all_countries = [map_country(country) for country in await reader.get_countries()]
+async def read_countries(limit: int = 10, page: int = 1, find: str = None) -> Any:
+    all_countries = search_all_countries(find, [map_country(country) for country in await reader.get_countries()])
     return get_paged_response(limit, page, all_countries)
 
 

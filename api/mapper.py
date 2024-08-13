@@ -1,15 +1,14 @@
-import time
+
 from itertools import batched
 from typing import Any
-from icecream import ic
-from typing_extensions import TypeVar
 
+from icecream import ic
+
+from api.config import cache
 from api.models import Country, PagedResult
-from cacheout import Cache
 
 ic.configureOutput(prefix='|> ')
 
-cache = Cache(maxsize=2048, ttl=60, timer=time.time, default=None)  # defaults
 
 
 def map_country(response_country_data: Any) -> Country:
@@ -19,7 +18,7 @@ def map_country(response_country_data: Any) -> Country:
     if cached_country is not None:
         ic(f'Use cached value')
         return cached_country
-    parsed = ic(Country.model_validate(response_country_data))
+    parsed = Country.model_validate(response_country_data)
     cache.add(country_key, parsed)
     return parsed
 
@@ -41,7 +40,7 @@ def get_paged_response(limit: int, page: int, records: list[Any]) -> PagedResult
         raise Exception(f'Page must be greater than 0')
     pages = list(batched(records, limit))
     page_index = page - 1
-    page_results = [] if len(pages) < page_index else pages[page_index]
+    page_results = [] if len(pages) < page else pages[page_index]
     return map_to_page_result(page, page_results, len(pages), len(records))
 
 

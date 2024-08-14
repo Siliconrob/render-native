@@ -1,10 +1,11 @@
+from operator import attrgetter
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
 from api.core import reader
 from api.core.finder import search_all_countries
-from api.mapper import cache, paged_dict_response
+from api.mapper import cache, paged_dict_response, sort_key
 from api.models import Language
 from api.routes.countries import map_country
 
@@ -12,21 +13,23 @@ router = APIRouter()
 
 
 @router.get("/languages", response_model=dict)
-async def read_languages(limit: int = 10, page: int = 1, find: str = None) -> Any:
+async def read_languages(limit: int = 10, page: int = 1, find: str = None, sort_by: str = None, sort_desc: bool = True) -> Any:
     all_languages = await mapped_languages()
     if find is None or find.strip() == '':
+        [v.sort(key=attrgetter(sort_key(sort_by)), reverse=not sort_desc) for (k, v) in all_languages.items()]
         return paged_dict_response(limit, page, all_languages)
     filtered = {}
     for (k, v) in all_languages.items():
         language_matches = search_all_countries(find, v)
         if language_matches is None or len(language_matches) == 0:
             continue
+        language_matches.sort(key=attrgetter(sort_key(sort_by)), reverse=not sort_desc)
         filtered[k] = language_matches
     return paged_dict_response(limit, page, filtered)
 
 
 @router.get("/languages/{id}", response_model=list[Language])
-async def read_language_by_id(id: str) -> Any:
+async def read_language_by_id(id: str, sort_by: str = None, sort_desc: bool = True) -> Any:
     language_key = cache_key(id)
     language = cache.get(language_key)
     if language is None:
@@ -37,7 +40,9 @@ async def read_language_by_id(id: str) -> Any:
         cache.set(language_key, language)
     result = Language()
     result.name = id.lower()
-    result.countries = language.values()
+    found_languages = language.values()
+    found_languages.sort(key=attrgetter(sort_key(sort_by)), reverse=not sort_desc)
+    result.countries = found_languages
     return [result]
 
 

@@ -1,4 +1,3 @@
-
 from itertools import batched
 from typing import Any
 
@@ -8,7 +7,6 @@ from api.config import cache
 from api.models import Country, PagedResult
 
 ic.configureOutput(prefix='|> ')
-
 
 
 def map_country(response_country_data: Any) -> Country:
@@ -21,6 +19,12 @@ def map_country(response_country_data: Any) -> Country:
     parsed = Country.model_validate(response_country_data)
     cache.add(country_key, parsed)
     return parsed
+
+
+def sort_key(sort: str = 'cca2') -> str:
+    if sort is None or sort.strip() == "":
+        sort = 'cca2'
+    return sort.strip()
 
 
 def map_to_page_result(page, page_results, page_count, total_count) -> PagedResult[Country]:

@@ -2,6 +2,7 @@ from operator import attrgetter
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
+from icecream import ic
 
 from api.core import reader
 from api.core.finder import search_all_countries
@@ -9,6 +10,7 @@ from api.mapper import cache, paged_dict_response, sort_key
 from api.models import Region
 from api.routes.countries import map_country
 
+ic.configureOutput(prefix='|> ')
 router = APIRouter()
 
 
@@ -16,14 +18,20 @@ router = APIRouter()
 async def read_regions(limit: int = 10, page: int = 1, find: str = None, sort_by: str = None, sort_desc: bool = True) -> Any:
     all_regions = await mapped_regions()
     if find is None or find.strip() == '':
-        [v.sort(key=attrgetter(sort_key(sort_by)), reverse=not sort_desc) for (k, v) in all_regions.items()]
+        try:
+            [v.sort(key=attrgetter(sort_key(sort_by)), reverse=not sort_desc) for (k, v) in all_regions.items()]
+        except AttributeError as error:
+            ic(error)
         return paged_dict_response(limit, page, all_regions)
     filtered = {}
     for (k, v) in all_regions.items():
         region_matches = search_all_countries(find, v)
         if region_matches is None or len(region_matches) == 0:
             continue
-        region_matches.sort(key=attrgetter(sort_key(sort_by)), reverse=not sort_desc)
+        try:
+            region_matches.sort(key=attrgetter(sort_key(sort_by)), reverse=not sort_desc)
+        except AttributeError as error:
+            ic(error)
         filtered[k] = region_matches
     return paged_dict_response(limit, page, filtered)
 
@@ -40,7 +48,10 @@ async def read_region_by_id(id: str, sort_by: str = None, sort_desc: bool = True
         cache.set(region_key, region)
     result = Region()
     result.name = id.lower()
-    region.sort(key=attrgetter(sort_key(sort_by)), reverse=not sort_desc)
+    try:
+        region.sort(key=attrgetter(sort_key(sort_by)), reverse=not sort_desc)
+    except AttributeError as error:
+        ic(error)
     result.countries = region
     return [result]
 

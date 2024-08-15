@@ -7,6 +7,7 @@ from icecream import ic
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import RedirectResponse
 
 from api.core import reader
 from api.main import api_router
@@ -14,7 +15,6 @@ from api.config import settings
 from api.mapper import map_country
 
 ic.configureOutput(prefix='|> ')
-
 
 def custom_generate_unique_id(route: APIRoute) -> str:
     return f"{route.tags[0]}-{route.name}"
@@ -39,6 +39,10 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+@app.get("/", include_in_schema=False, tags=["Default"])
+async def docs_redirect():
+    return RedirectResponse(url='/docs')
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -50,3 +54,4 @@ app.add_middleware(
 app.include_router(api_router, prefix=settings.API_V1_STR)
 app.state.limiter = limiter
 app.add_exception_handler(429, _rate_limit_exceeded_handler)
+

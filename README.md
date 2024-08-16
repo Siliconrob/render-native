@@ -71,4 +71,5 @@ There is a [render.yaml](https://github.com/Siliconrob/render-native/blob/main/r
  - Setup a name
  - Set the `Start Command` to `uvicorn main:app --host 0.0.0.0 --port $PORT`
  - Go to `Environment` settings and copy the .env file you have setup above
+ ![python_env](https://github.com/user-attachments/assets/0db7b0ec-0f78-48b5-a3eb-4b3df9badbb3)
  - Trigger a manual deployment

@@ -10,6 +10,7 @@ The following components are on the free hosted tier level of [Render](https://r
 
 ## Demo use
 
+![fastapi](https://github.com/user-attachments/assets/c4d6b33b-ed18-43d4-b02b-74f9bfeb1d5b)
 
 ## Flow
 

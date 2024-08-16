@@ -59,7 +59,7 @@ PYTHON_VERSION=3.12.4
 - `poetry run uvicorn main:app --reload`
 
 ### Note
-There is a `render.yaml` that is a detailed Render blueprint you can use for deployment
+There is a [render.yaml](https://github.com/Siliconrob/render-native/blob/main/render.yaml) that is a detailed Render blueprint you can use for deployment
 
 ## Render Deployment
 

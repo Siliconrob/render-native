@@ -3,10 +3,22 @@ Welcome to this sample application API built in [Python 3.12.4](https://www.pyth
 There are three components to this system (microservish)
 - React UI [live](https://thisdotco.onrender.com) [source](https://github.com/Siliconrob/thisdotco)
 
-The following components are on the free hosted tier level of [Render](https://render.com/) and are shutdown when not in use.  Accessing each component from a shutdown state requires it to spin back up and this can delay requests for a minute or so.
+The following components are on the **free hosted tier level** of [Render](https://render.com/) and are shutdown when not in use.  Accessing each component from a shutdown state requires it to spin back up and this can **delay requests for a minute or so**.
 
-- .NET API built with [ServiceStack](https://github.com/ServiceStack/ServiceStack) [live](https://calamansi.onrender.com) 
-- FastAPI API built with [FastAPI](https://fastapi.tiangolo.com/) [live](https://restful-with-more-fastapi.onrender.com)
+- [.NET API](https://calamansi.onrender.com) - [code](https://github.com/Siliconrob/calamansi) built with [ServiceStack](https://github.com/ServiceStack/ServiceStack)
+- [FastAPI API](https://restful-with-more-fastapi.onrender.com) - [code](https://github.com/Siliconrob/render-native) built with [FastAPI](https://fastapi.tiangolo.com/)
+
+## Proud of
+
+**Use poetry and pydantic typing for the API**
+
+## Highlight
+
+Python is a good choice for handling free flowing data by using dictionaries over strong types
+
+## Improvement
+
+Add in restricted authorization API or tokens
 
 ## Demo use
 

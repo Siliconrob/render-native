@@ -21,7 +21,7 @@ This API was built on top of FastAPI which is my favorite framework when working
 
 ## Design
 
-Looking over the[REST Countries API](https://restcountries.com/), two points jump out to me.
+Looking over the [REST Countries API](https://restcountries.com/), two points jump out to me.
 
 - There are only a limited amount of countries in the world.  The API returns 250 for all.  This is a small data amount even pulling in all the details.
 - The country data is not changing and would only change if a new country is formed or a major political event occurs.
